@@ -34,9 +34,9 @@ public class GithubRepositoryDetailResourceTest {
    private TestRestTemplate restTemplate;
 
    @Test
-   public void testSummaryOk() throws Exception {
+   public void testJsoupSummaryOk() throws Exception {
       URL url = new URL("http://localhost:".concat(String.valueOf(this.port))
-                                           .concat("/api/github-repository-summary?user=DavidChavess&repository=aluguel-veiculos"));
+                                           .concat("/api/github-repository-summary-jsoup?user=DavidChavess&repository=aluguel-veiculos"));
 
       ResponseEntity<Collection<RepositorySummaryDTO>> entity = this.restTemplate.exchange(url.toURI(),
                                                                                            HttpMethod.GET,
@@ -59,8 +59,9 @@ public class GithubRepositoryDetailResourceTest {
 
    @Test
    @SuppressWarnings("unchecked")
-   public void testInvalidParameters() throws Exception {
-      URL url = new URL("http://localhost:".concat(String.valueOf(this.port)).concat("/api/github-repository-summary?user="));
+   public void testJsoupInvalidParameters() throws Exception {
+      URL url = new URL("http://localhost:".concat(String.valueOf(this.port))
+                                           .concat("/api/github-repository-summary-jsoup?user="));
       Map<String, Object> entity = (Map<String, Object>) this.restTemplate.getForObject(url.toURI(), Object.class);
 
       assertEquals(entity.get("status"), "BAD_REQUEST");
@@ -68,9 +69,53 @@ public class GithubRepositoryDetailResourceTest {
 
    @Test
    @SuppressWarnings("unchecked")
-   public void testRepositoryNotValid() throws Exception {
+   public void testJsoupRepositoryNotValid() throws Exception {
       URL url = new URL("http://localhost:".concat(String.valueOf(this.port))
-                                           .concat("/api/github-repository-summary?user=abc&repository=trustly"));
+                                           .concat("/api/github-repository-summary-jsoup?user=abc&repository=trustly"));
+      Map<String, Object> entity = (Map<String, Object>) this.restTemplate.getForObject(url.toURI(), Object.class);
+
+      assertEquals(entity.get("status"), "NOT_FOUND");
+   }
+
+   @Test
+   public void testHtmlSummaryOk() throws Exception {
+      URL url = new URL("http://localhost:".concat(String.valueOf(this.port))
+                                           .concat("/api/github-repository-summary-html?user=DavidChavess&repository=aluguel-veiculos"));
+
+      ResponseEntity<Collection<RepositorySummaryDTO>> entity = this.restTemplate.exchange(url.toURI(),
+                                                                                           HttpMethod.GET,
+                                                                                           null,
+                                                                                           new ParameterizedTypeReference<Collection<RepositorySummaryDTO>>() {});
+
+      Collection<RepositorySummaryDTO> summary = entity.getBody();
+
+      assertEquals(entity.getStatusCodeValue(), 200);
+      assertEquals(summary.size(), 14);
+
+      Optional<RepositorySummaryDTO> findFirst = summary.stream()
+                                                        .filter(s -> "java".equalsIgnoreCase(s.getExtension().trim()))
+                                                        .findFirst();
+
+      if (findFirst.isPresent()) {
+         assertEquals("java", findFirst.get().getExtension());
+      }
+   }
+
+   @Test
+   @SuppressWarnings("unchecked")
+   public void testHtmlInvalidParameters() throws Exception {
+      URL url = new URL("http://localhost:".concat(String.valueOf(this.port))
+                                           .concat("/api/github-repository-summary-html?user="));
+      Map<String, Object> entity = (Map<String, Object>) this.restTemplate.getForObject(url.toURI(), Object.class);
+
+      assertEquals(entity.get("status"), "BAD_REQUEST");
+   }
+
+   @Test
+   @SuppressWarnings("unchecked")
+   public void testHtmlRepositoryNotValid() throws Exception {
+      URL url = new URL("http://localhost:".concat(String.valueOf(this.port))
+                                           .concat("/api/github-repository-summary-html?user=abc&repository=trustly"));
       Map<String, Object> entity = (Map<String, Object>) this.restTemplate.getForObject(url.toURI(), Object.class);
 
       assertEquals(entity.get("status"), "NOT_FOUND");

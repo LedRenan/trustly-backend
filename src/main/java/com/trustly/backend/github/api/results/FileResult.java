@@ -3,6 +3,7 @@ package com.trustly.backend.github.api.results;
 import java.math.BigInteger;
 
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * <B> Class for represents a result from a Github repository summary. </B>
@@ -10,6 +11,7 @@ import lombok.Getter;
  * @author renan.picchi
  */
 @Getter
+@ToString
 public final class FileResult {
 
    private final String extension;

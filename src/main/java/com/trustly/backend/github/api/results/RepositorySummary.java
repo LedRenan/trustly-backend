@@ -6,11 +6,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.ToString;
+
 /**
  * <B> Encapsulated class with the file results groupd by file extension. </B>
  *
  * @author renan.picchi
  */
+@ToString
 public final class RepositorySummary {
 
    private final Map<String, FileResult> results = Collections.synchronizedMap(new HashMap<String, FileResult>());

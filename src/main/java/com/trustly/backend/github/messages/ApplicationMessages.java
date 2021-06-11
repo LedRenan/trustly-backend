@@ -15,6 +15,8 @@ public enum ApplicationMessages {
 
    CANT_READ_GITHUB_URL("github.message.cant-read-url"),
 
+   CANT_READ_GITHUB_FILE("github.message.cant-read-file"),
+
    CANT_CALCULATE_FILE_SIZE("github.message.cant-calucate-file-size"),
 
    CANT_DEFINE_FILE_EXTENSION("github.message.cant-define-file-extension");

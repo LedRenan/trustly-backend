@@ -3,13 +3,13 @@ package com.trustly.backend.github.api.jsoup;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import com.trustly.backend.github.api.github.GithubEnum;
-import com.trustly.backend.github.api.util.AppFileUtil;
 import com.trustly.backend.github.api.util.ConverterFileUnitUtil;
 import com.trustly.backend.github.exception.GithubException;
 import com.trustly.backend.github.messages.ApplicationMessages;
@@ -182,12 +182,29 @@ final class JsoupGithubRepositoryParser {
          List<Node> childNodes = elements.get(0).childNodes();
 
          if (JsoupUtil.isNotEmpty(childNodes)) {
-            return AppFileUtil.getExtension(childNodes.get(0).toString());
+            return getFileExtension(childNodes.get(0).toString());
          }
       }
 
       String message = MessageUtil.getMessage(ApplicationMessages.CANT_DEFINE_FILE_EXTENSION, url);
       log.error(message);
       throw new GithubException(message);
+   }
+
+   /**
+    * <B> Returns file extension from file. </B>
+    *
+    * @param filename
+    *           file name from file.
+    * @return file extension.
+    */
+   private String getFileExtension(String filename) {
+      String result = filename;
+
+      if (filename.contains(FilenameUtils.EXTENSION_SEPARATOR_STR)) {
+         result = FilenameUtils.getExtension(filename);
+      }
+
+      return result;
    }
 }

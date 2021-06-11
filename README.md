@@ -1,4 +1,9 @@
 # Trustly Backend Github for Back-End Engineers position
+
+### Author
+Renan Gatte Picchi
+
+### Summary
 This project is for a Back-end Enginners position in Trustly.
 Basically, this project contains a API that returns a summary from a public Github repository. The response is composed for total number of lines, number of files and size of total of files in bytes grouped by file extension.
 For more details, read on below.
@@ -18,5 +23,35 @@ This project has been built using Jsoup library. This library is HTML parser ver
 - commons-io 2.6
 - junit-jupiter-engine 5.7.2
 
-### Author
-Renan Gatte Picchi - renangatte@gmail.com
+### Github repository
+To clone repository:
+
+```
+git clone https://github.com/LedRenan/trustly-backend
+```
+
+### Install and run
+Execute the command below to build the application
+
+```
+mvn clean install
+```
+
+Execute the command below to run the application
+
+```
+mvn spring-boot:run
+```
+
+### AWS EC2 Environment
+This application is running on AWS EC2. Access the URL below to try the API.
+
+```
+http://ec2-18-117-184-200.us-east-2.compute.amazonaws.com:8080/api/github-repository-summary?user=LedRenan&repository=trustly-backend
+```
+
+For more information about the API, access the URL below:
+
+```
+http://ec2-18-117-184-200.us-east-2.compute.amazonaws.com:8080/swagger-ui.html
+```

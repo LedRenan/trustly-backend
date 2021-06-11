@@ -36,7 +36,7 @@ public class GithubRepositoryDetailsResource {
    @ApiOperation(value = "Returns a summary from Github repository with lines count, bytes amount grouped by file extension")
    @ApiResponses(value = {@ApiResponse(code = 200, message = "Response is OK"),
                           @ApiResponse(code = 400, message = "Invalid parameters (user/repository)"),
-                          @ApiResponse(code = 404, message = "Resource not found"),
+                          @ApiResponse(code = 404, message = "Github repository not found"),
                           @ApiResponse(code = 500, message = "Internal server error")})
    @GetMapping(value = "github-repository-summary")
    @ResponseStatus(HttpStatus.OK)

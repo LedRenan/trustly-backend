@@ -9,8 +9,8 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.trustly.backend.github.dto.RepositorySummaryDTO;
@@ -24,7 +24,6 @@ import com.trustly.backend.github.service.impl.JsoupGithubRepositoryDetailsServi
 @SpringBootTest
 public class JsoupGithubRepositoryDetailsServiceMockTest {
 
-   @Mock
    @InjectMocks
    private JsoupGithubRepositoryDetailsService jsoupService = new JsoupGithubRepositoryDetailsService();
 
@@ -34,6 +33,7 @@ public class JsoupGithubRepositoryDetailsServiceMockTest {
    }
 
    @DisplayName("Test Mock Jsoup service layer - Collection size")
+   @Test
    public void testGetGithubRepositorySummaryCollectionSize() {
       Collection<RepositorySummaryDTO> summaryFromService = jsoupService.getGithubRepositorySummary("trustly", "challenge");
       assertEquals(summaryFromService.size(), getSummaryResponse().size());
@@ -56,6 +56,7 @@ public class JsoupGithubRepositoryDetailsServiceMockTest {
    }
 
    @DisplayName("Test Mock Jsoup service layer - Lines number")
+   @Test
    public void testGetGithubRepositorySummaryLinesNumber() {
       Collection<RepositorySummaryDTO> summaryFromService = jsoupService.getGithubRepositorySummary("trustly", "challenge");
 

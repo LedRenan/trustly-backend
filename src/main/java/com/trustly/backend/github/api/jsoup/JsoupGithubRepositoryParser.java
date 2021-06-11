@@ -103,7 +103,21 @@ final class JsoupGithubRepositoryParser {
          int indexOf = content.trim().indexOf(GithubEnum.PARSER_LINE.value());
 
          if (indexOf >= 0) {
-            return new BigInteger(content.substring(0, indexOf).trim());
+            String substring = content.substring(0, indexOf).trim();
+            StringBuilder fileSize = new StringBuilder();
+
+            for (int i = substring.length() - 1; i >= 0; i--) {
+               char charAt = content.charAt(i);
+
+               if (Character.isDigit(charAt)) {
+                  fileSize.insert(0, charAt);
+               }
+               else {
+                  break;
+               }
+            }
+
+            return new BigInteger(fileSize.toString().trim());
          }
       }
 

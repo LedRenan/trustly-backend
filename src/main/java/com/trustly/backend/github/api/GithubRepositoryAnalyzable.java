@@ -46,4 +46,12 @@ public interface GithubRepositoryAnalyzable<T> {
    public default String getGithubUrl(String suffix) {
       return GithubEnum.URL.value().concat("/").concat(suffix);
    }
+
+   /**
+    * <B> Checks if the URL from github is a valid repository. </B>
+    *
+    * @param url
+    *           from Github repository.
+    */
+   public void checkValidRepository(String url);
 }

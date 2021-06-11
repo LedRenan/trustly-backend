@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import com.trustly.backend.github.api.jsoup.JsoupGithubRepositoryAnalyzerV2;
+import com.trustly.backend.github.api.jsoup.JsoupGithubRepositoryAnalyzer;
 import com.trustly.backend.github.api.results.RepositorySummary;
 import com.trustly.backend.github.dto.RepositorySummaryDTO;
 import com.trustly.backend.github.service.GithubRepositoryDetailService;
@@ -20,7 +20,7 @@ public class JsoupGithubRepositoryDetailsService implements GithubRepositoryDeta
 
    @Override
    public Collection<RepositorySummaryDTO> getGithubRepositorySummary(String user, String repository) {
-      RepositorySummary repositorySummary = new JsoupGithubRepositoryAnalyzerV2().getRepositorySummary(user, repository);
+      RepositorySummary repositorySummary = new JsoupGithubRepositoryAnalyzer().getRepositorySummary(user, repository);
 
       Collection<RepositorySummaryDTO> results = new ArrayList<RepositorySummaryDTO>();
 

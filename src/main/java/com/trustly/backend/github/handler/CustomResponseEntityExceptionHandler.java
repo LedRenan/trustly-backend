@@ -13,6 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.trustly.backend.github.exception.GithubException;
+import com.trustly.backend.github.exception.GithubRepositoryNotFoundException;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -25,15 +26,29 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-   @ExceptionHandler(value = {GithubException.class})
+   @ExceptionHandler(value = {GithubException.class, GithubRepositoryNotFoundException.class})
    protected ResponseEntity<Object> handleGithubException(Exception ex, WebRequest request) {
+      Collection<String> errors = null;
+
+      if (ex.getCause() != null) {
+         errors = new ArrayList<String>();
+         errors.add(ex.getCause().getLocalizedMessage());
+      }
+
+      HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+      if (ex instanceof GithubRepositoryNotFoundException) {
+         status = HttpStatus.NOT_FOUND;
+      }
+
       return handleExceptionInternal(ex,
                                      ApiMessageError.builder()
                                                     .message(ex.getLocalizedMessage())
-                                                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                                    .status(status)
+                                                    .errors(errors)
                                                     .build(),
                                      new HttpHeaders(),
-                                     HttpStatus.INTERNAL_SERVER_ERROR,
+                                     status,
                                      request);
    }
 

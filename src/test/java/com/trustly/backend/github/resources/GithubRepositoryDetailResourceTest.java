@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +54,21 @@ public class GithubRepositoryDetailResourceTest {
    }
 
    @Test
+   @SuppressWarnings("unchecked")
    public void testInvalidParameters() throws Exception {
       URL url = new URL("http://localhost:".concat(String.valueOf(this.port)).concat("/api/github-repository-summary?user="));
+      Map<String, Object> entity = (Map<String, Object>) this.restTemplate.getForObject(url.toURI(), Object.class);
 
-      ResponseEntity<Collection<RepositorySummaryDTO>> entity = this.restTemplate.exchange(url.toURI(),
-                                                                                           HttpMethod.GET,
-                                                                                           null,
-                                                                                           new ParameterizedTypeReference<Collection<RepositorySummaryDTO>>() {});
+      assertEquals(entity.get("status"), "BAD_REQUEST");
+   }
 
-      assertEquals(entity.getStatusCodeValue(), 400);
+   @Test
+   @SuppressWarnings("unchecked")
+   public void testRepositoryNotValid() throws Exception {
+      URL url = new URL("http://localhost:".concat(String.valueOf(this.port))
+                                           .concat("/api/github-repository-summary?user=abc&repository=trustly"));
+      Map<String, Object> entity = (Map<String, Object>) this.restTemplate.getForObject(url.toURI(), Object.class);
+
+      assertEquals(entity.get("status"), "NOT_FOUND");
    }
 }

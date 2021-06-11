@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +47,14 @@ public class GithubRepositoryDetailResourceTest {
 
       assertEquals(entity.getStatusCodeValue(), 200);
       assertEquals(summary.size(), 14);
-      assertEquals("java",
-                   summary.stream()
-                          .filter(s -> "java".equalsIgnoreCase(s.getExtension().trim()))
-                          .findFirst()
-                          .orElseThrow(IllegalArgumentException::new));
+
+      Optional<RepositorySummaryDTO> findFirst = summary.stream()
+                                                        .filter(s -> "java".equalsIgnoreCase(s.getExtension().trim()))
+                                                        .findFirst();
+
+      if (findFirst.isPresent()) {
+         assertEquals("java", findFirst.get().getExtension());
+      }
    }
 
    @Test
